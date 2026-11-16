@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{changepage}
+\usepackage{dsfont}
+
+
+\DeclareMathOperator*{\maxi}{max}
+\DeclareMathOperator*{\mini}{min}
+\title{Perceiving Political Orientation: Uncovering the Prior of a Bayesian Agent}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Level 1}
+\subsection*{Introduction}
+///
+\subsection*{Research question and objectives}
+///
+\subsection*{Methods and models}
+\subsubsection*{Mathematical description of the observer - Description of the Bayesian observer}
+The densities and associated variables used to describe the Bayesian observer are as follows :
+\begin{itemize}
+    \item The \textbf{score obtained from public statement i} is normally distributed around the figure’s covert position $x_j$ : $m_j|x_j \sim \mathcal{N}(x_j, \sigma^2_j)$. The associated density is the likelihood $P(m_j|x_j) = \mathcal{N}(x_j, \sigma^2_j)$
+    \item The prior is the density describing the observer belief about the position of any public figure and is normally distributed : $P(x_j)=\mathcal{N}(\mu_0, \sigma^2_0)$
+    \item The estimation of the figures's covert position using Bayes rules is the posterior which is normally distributed too and is the combination of the prior and the likelihood : $P(x_j |m_j)\propto P(m_j|x_j)\cdot P(x_j)$\\
+\end{itemize}
+Computation of the posterior :\\
+\begin{align*}
+P(x_j | m_j) &\propto \frac{1}{2 \pi} \exp\left( \frac{-(m_j-x_j)^2}{2 \sigma^2_j} \right) \cdot \exp\left( \frac{-(x_j-\mu_0)^2}{2 \sigma_0^2} \right) \\
+&\propto \exp\left( \frac{-(m_j-x_j)^2}{2 \sigma^2_j} - \frac{-(x_j-\mu_0)^2}{2 \sigma_0^2} \right) \\
+\end{align*}
+\subsubsection{Mathematical description of the observer - Computation of the theoretical estimate made by a Bayesian observer (using the MAP)}
+In order to compute the estimate of the observer, we compute the MAP as follows:\\
+$ln(P(x_j | m_j)) = \frac{-(m_j-x_j)^2}{2 \sigma^2_j} + \frac{-(x_j-\mu_0)^2}{2 \sigma_0^2}$\\
+And compute, by taking the derivative with respect to $x_j$, the argument that maximizes the posterior:\\
+\begin{align*}
+    &&\frac{\partial \ln(P(x_j | m_j))}{\partial x_j} &= 0 \\
+    &\iff &\frac{\partial}{\partial x_j} \left( \frac{-(m_j-x_j)^2}{2 \sigma^2_j} \right) + \frac{\partial}{\partial x_j} \left( \frac{-(x_j-\mu_0)^2}{2 \sigma_0^2} \right) &= 0 \\
+    &\iff &\frac{m_j - x_j}{\sigma^2_j} - \frac{x_j - \mu_0}{\sigma_0^2} &= 0 \\
+    &\iff &x_j\left(\frac{1}{\sigma^2_j} + \frac{1}{\sigma^2_0}\right) - \frac{m_j}{\sigma^2_j} + \frac{\mu_0}{\sigma^2_0} &= 0\\
+    &\iff &x_j(\tau_j+\tau_0)&= m_j\tau_j+\mu_0 \tau_0\\
+    &\iff &\hat{x_j} &= \frac{m_j\tau_j+\mu_0\tau_0}{\tau_j+\tau_0}
+\end{align*}
+From this relation : when $\tau_j$ (the statement is precise) increases the estimate is closer to the score of the statement, otherwise, it is closer to the initial belief of the observer.\\
+\subsubsection*{Mathematical description of the observer - Mean of the estimate of the Bayesian Observer}
+Computation of the mean of the estimate:\\
+\begin{align*}
+    \mathbb{E}[\hat{x_j} |x_j] &= \frac{\mathbb{E}[m_j |x_j]\tau_j + \mu_0 \tau_0}{\tau_0 +\tau_j}\\
+    &= \frac{x_j \tau_j +\mu_0\tau_0}{\tau_0+\tau_j}\\
+    &=x_j+\frac{\tau_0}{\tau_0+\tau_j}(\mu_0-x_j)\\
+\end{align*}
+\begin{align*}
+    \mathbb{V}[\hat{x_j} |x_j] &= \frac{\tau^2_j \sigma^2_j}{(\tau_0+\tau_j)^2}\\
+    &= \frac{\tau_j}{(\tau_0 + \tau_j)^2}\\
+\end{align*}
+\subsubsection*{Mathematical description of the observer - Theoretical psychometric curves with some simplifications }
+Let's compute the form of the theoretical psychometric curves (Z is a normal variable as the substraction of two normal variables):\\
+\begin{align*}
+    \Psi(x_{ref},x_{test}) &= P(\hat{x}_{test} > \hat{x}_{ref})\\
+    &= \Psi \left( \frac{\mu_{\hat{x_{test}}}(x_{test})-\mu_{\hat{x_{ref}}}(x_{ref})}{\sqrt{\sigma^2_{\hat{x}_{ref}}+\sigma^2_{\hat{x}_{test}}}} \right)\\
+    &= \Psi \left( \frac{\omega_{test}x_{test}-\omega_{ref}x_{ref}+(\omega_{ref}-\omega_{test})\mu_0}{\sqrt{\omega_{ref}^2\sigma^2_{\hat{x}_{ref}}+\omega_{test}^2\sigma^2_{\hat{x}_{test}}}} \right)
+\end{align*}
+In order to simplify the formula, we can fix $x_{ref}=0.01$, hence $\omega_{ref} \approx 1$\\ 
+\begin{align}
+    \Psi(x_{ref},x_{test}) &= \Psi \left( \frac{\omega_{test}x_{test}-x_{ref}+(1-\omega_{test})\mu_0}{\omega_{test}\sigma_{\hat{x}_{test}}} \right)
+\end{align}
+
+\begin{align*}
+    \omega_{ref} &= \frac{\tau_{ref}}{\tau_0+\tau_{ref}}\\
+    &= \frac{\sigma_0}{\sigma_0+\sigma_{test}}\\
+    \omega_{test}&= \frac{\tau_{test}}{\tau_0+\tau_{tes}}\\
+    &= \frac{\sigma_0}{\sigma_0+\sigma_{ref}}\\
+\end{align*}
+\subsubsection*{Mathematical description of the observer - How the theoretical psychometric curves will be shifted by the Bayesian observations from $x_{ref}$}
+We can observe that having $\omega_{ref}-\omega_{test}$ is not something we wish for as the parameters of interest $\mu_0$ and $\sigma_0$ would be gone. The data used for experiments will have to avoid this case.\\
+Let's see how the "0.5" of the curve is predicted to shift from $x_{ref}$ according to the theoretical curve we just computed.
+\begin{align*}
+    \omega_{test}x_{test}-\omega_{ref}x_{ref}+(\omega_{ref}-\omega_{test})\mu_0 =0\\
+    x_{test,0.5} = x_{ref} + \frac{\sigma_{test}^2}{\sigma_0}(x_{ref}-\mu_0)
+\end{align*}
+From this formula, we can see that theoretically, the curves will be shifted from $x_{ref}$ by the quantity $\frac{\sigma_{test}^2}{\sigma_0}(x_{ref}-\mu_0)$, which depends on the two paramteres we wish to evaluate. \\
+We observe that when $x_{ref}=\mu_0$, there will be no shift as $x_{test,0.5} = x_{ref} $\\
+We need to evaluate several values for $x_{ref}$ (such as {-4, -2, 0, 2, 4}). For each value of $x_{ref}$, we need to evaluate multiple values of $\sigma_{test}$ in order to account for big and small values of $\mu_0$, as it is a coefficient before $x_{ref}-\mu_0$ (such as {0.25, 0.5, 1, 2, 4}).\\
+We repeat each experiment 10 times in order to have experimental values that are not too noisy, as the observer will reply different things for same values (we take the means for each value of $x_{test}$.\\
+
+\subsubsection*{Mathematical description of the observer - Fitting of the experimental psychometric curves}
+The agent returns a file with its binary responses for each experiment (that we can call y ($\in \{0,1\}$)).\\
+We want to find a function to optimize that depends on the two parameters we want to find and that will be optimize by a classification algorithm.\\
+The algorithm will start with one random value for the two parameters. For each experiment, the theoretical psychometric curves will ideally predict the response of the observer (who is thought here to be a Bayesian observer). The idea is thus to compare the prediction of the function we defined with the actual response of the observer, and for each run through all the lines of the file, adjust the parameter to optimize the function more and more.\\
+$y_i|x_i \sim Ber(\Psi_i)$ and $P(y_i|x_i)=\Psi_i^{y_i}(1-\Psi_i)^{1-y_i}$ with $y_i$ the binary reply of the observer and $\Psi_i$ the prediction of our function which depends on the two parameters we want to find. Hence we optimize the likelihood of the responses.\\
+The different trials are identically distributed and independent. The function to optimize is the following:\\
+\begin{align*}
+        L(\mu_0, \sigma_0)=\prod_{i=1}^{N} P(y_i|x_i)
+\end{align*}
+To simplify we take the ln:\\
+
+\begin{align*}
+        L(\mu_0, \sigma_0)&=\sum_{i=1}^{N} ln(P(y_i|x_i))\\
+        &= \sum_{i=1}^{N} (y_iln(\Psi_i)+(1-y_i)ln(1-\Psi_i))
+\end{align*}
+We minimize the negative mean of this quantity:
+\begin{align*}
+        l(\mu_0, \sigma_0)=-\frac{1}{N}l(\mu_0, \sigma_0)&=-\frac{1}{N}\sum_{i=1}^{N} ln(P(y_i|x_i))\\
+        &= -\frac{1}{N}\sum_{i=1}^{N} (y_iln(\Psi_i)+(1-y_i)ln(1-\Psi_i))
+\end{align*}
+
+\subsection*{Results}
+Optimized parameters: $\mu_0 = 0.764729811579522$ and  $\sigma^2_0 = 0.6986927478998974$
+
+\section*{Level 2}
+\subsection*{Introduction}
+
+\subsection*{Research question and objectives}
+\subsection*{Methods and models}
+Computation of the posterior :\\
+\begin{align*}
+P(\Tilde{x_j} | m_{j,1}, m_{j,2}) &\propto \frac{1}{2 \pi} \exp\left( \frac{-(\Tilde{x}_j-\mu_0)^2}{2 \sigma^2_0} \right) \cdot \exp\left( \frac{-(m_{j,1}-\Tilde{x}_j)^2}{2 \sigma_{j,1}^2} \right)\cdot \exp\left( \frac{-(m_{j,2}-\Tilde{x}_j)^2}{2 \sigma_{j,2}^2} \right) \\
+&\propto \exp\left( \frac{-(\Tilde{x}_j-\mu_0)^2}{2 \sigma^2_j} + \frac{-(m_{j,1}-\Tilde{x}_j)^2}{2 \sigma_{j,1}^2} + \frac{-(m_{j,2}-\Tilde{x}_j)^2}{2 \sigma_{j,2}^2} \right) \\
+\end{align*}
+And compute, by taking the derivative with respect to $\Tilde{x}_j$, the argument that maximizes the posterior:\\
+\begin{align*}
+    &&\frac{\partial \ln(P(\Tilde{x_j} | m_{j,1}, m_{j,2}) )}{\partial x_j} = 0 \\
+    &\iff &\frac{\Tilde{x}_j-\mu_0}{\sigma^2_0} + \frac{\Tilde{x}_j - m_{j,1}}{\sigma_{j,1}^2}+ \frac{\Tilde{x}_j - m_{j,2}}{\sigma_{j,2}^2} = 0 \\
+    &\iff &\hat{\Tilde{x}}_j = \frac{\tau_{j,1}m_{j,1}+\tau_{j,2}m_{j,2}+\tau_0\mu_0}{\tau_{j,1}+\tau_{j,2}+\tau_0}
+\end{align*}
+\subsubsection*{Mathematical description of the observer - Mean of the estimate of the Bayesian Observer}
+Computation of the mean of the estimate:\\
+\begin{align*}
+    \mu_{\hat{\Tilde{x}}_j}(\Tilde{x}_j)&= \mathbb{E}[\hat{\Tilde{x}}_j |\Tilde{x_j}] \\
+    &= \frac{\tau_{j,1}\mathbb{E}[m_{j,1} |\Tilde{x}_j] + \tau_{j,2}\mathbb{E}[m_{j,2} |\Tilde{x}_j]+\tau_0\mu_0 }{\tau_{j,1}+\tau_{j,2}+\tau_0 }\\
+    &= \frac{\tau_{j,1}\Tilde{x}_j +\tau_{j,2}\Tilde{x}_j +\tau_0\mu_0 }{\tau_{j,1}+\tau_{j,2}+\tau_0 }\\
+\end{align*}
+\begin{align*}
+    \sigma_{\hat{\Tilde{x}}_j}(\Tilde{x}_j) &= \mathbb{V}[\hat{x_j} |x_j] \\
+    &= \frac{(\tau_{j,1}+\tau_{j,2}) }{(\tau_{j,1}+\tau_{j,2}+\tau_0)^2}\\
+\end{align*}
+We can actully control both cues:\\
+\begin{align*}
+    \mu_{\hat{\Tilde{x}}_j}(x_{j,1}, x_{j,2}) &= \frac{\tau_{j,1}\mathbb{E}[m_{j,1} |x_{j,1}] + \tau_{j,2}\mathbb{E}[m_{j,2} |x_{j,2}]+\tau_0\mu_0 }{\tau_{j,1}+\tau_{j,2}+\tau_0 }\\
+    &= \frac{\tau_{j,1}x_{j,1} +\tau_{j,2}x_{j,2} +\tau_0\mu_0 }{\tau_{j,1}+\tau_{j,2}+\tau_0 }\\
+\end{align*}
+Let's compute the form of the theoretical psychometric curves (Z is a normal variable as the substraction of two normal variables):\\
+\begin{align*}
+    \Psi(x_{ref},x_{test}) &= P(\hat{x}_{test} > \hat{x}_{ref})\\
+    &= \Psi \left( \frac{\mu_{\hat{x_{test}}}(x_{test})-\mu_{\hat{x_{ref}}}(x_{ref})}{\sqrt{\sigma^2_{\hat{x}_{ref}}+\sigma^2_{\hat{x}_{test}}}} \right)\\
+    &= \Psi \left( \frac{1}{\sqrt{2(\tau_1+\tau_2)}} \left( (\tau_1+\tau_2)x_{test}-(\tau_1 x_{ref,1}+\tau_2 x_{ref,2}) \right) \right)
+\end{align*}
+Computation of $x_{test,50}$
+\begin{align*}
+    x_{test,0.5} = \frac{\tau_1x_{ref,1}+\tau_2x_{ref,2}}{\tau_1+\tau_2}
+\end{align*}
+\end{document}

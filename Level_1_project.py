@@ -6,10 +6,10 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.stats import norm
 
-s1_val = s1_val = list(range(-4, 5, 2))
+s1_val = list(range(-4, 5, 2))
 s2_val = list(range(-10, 11, 1))
 s1_var = 0.01
-s2_var = s2_var = [0.25, 0.5, 1.0, 2.0, 4.0]
+s2_var = [0.25, 0.5, 1.0, 2.0, 4.0]
 data={"Trial": [], "S1_val": [], "S1_var": [], "S2_val": [], "S2_var": []}
 cpt_trial = 1
 
